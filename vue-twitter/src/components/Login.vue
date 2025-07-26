@@ -29,6 +29,7 @@ function resetName() {
     <input type="text" v-model="username" />
     <button @click="saveName">保存</button>
     <button @click="resetName">リセット</button>
+    <router-link to="/">ホームへ戻る</router-link>
   </div>
 </template>
 
