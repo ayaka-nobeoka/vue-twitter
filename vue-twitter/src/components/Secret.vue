@@ -120,103 +120,132 @@ async function likePost(id, currentCount) {
 </script>
 
 <template>
-  <div class="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
-    <router-link to="/login" class="text-purple-700 underline mb-4 block">
-      ログインページへ
+  <div
+    class="max-w-xl mx-auto p-6 bg-gray-900 text-gray-100 rounded-lg shadow-lg mt-10"
+  >
+    <!-- ナビゲーション -->
+    <router-link
+      to="/login"
+      class="text-blue-300 underline mb-4 block hover:text-blue-400"
+    >
+      ログインページへ戻る
     </router-link>
-    <div class="mb-4">
-      <h1 class="text-2xl font-bold text-center text-gray-800 mb-4">掲示板</h1>
 
-      <label class="block font-semibold mb-1">🔍検索</label>
+    <!-- タイトル -->
+    <div class="mb-4">
+      <h1 class="text-2xl font-bold text-center text-blue-200 mb-4">
+        こっちは秘密掲示板🌙
+      </h1>
+
+      <!-- 検索欄 -->
+      <label class="block font-semibold text-sm text-gray-300 mb-1"
+        >🔍 検索</label
+      >
       <input
         v-model="searchKeyword"
-        class="w-full border border-gray-300 p-2 rounded"
+        class="w-full bg-gray-800 border border-gray-600 text-gray-100 p-2 rounded"
         type="text"
-        placeholder="名前 or コメント"
+        placeholder="名前やコメントを検索"
       />
     </div>
-    <div class="bg-white p-4 border border-gray-400 mb-6">
-      <h2 class="text-lg font-bold text-blue-800 border-b pb-1 mb-2">
+
+    <!-- 新規投稿フォーム -->
+    <div class="bg-gray-800 p-4 border border-gray-700 rounded mb-6">
+      <h2
+        class="text-lg font-bold text-blue-200 border-b border-gray-600 pb-1 mb-3"
+      >
         📩 新規投稿
       </h2>
 
-      <label class="block text-sm font-bold mb-1">名前</label>
+      <label class="block text-sm font-bold text-gray-300 mb-1">名前</label>
       <input
         v-model="name"
-        class="w-full border border-gray-400 p-1 text-sm mb-2"
+        class="w-full bg-gray-900 border border-gray-600 text-gray-100 p-1 mb-2 rounded"
         type="text"
       />
 
-      <label class="block text-sm font-bold mb-1">コメント</label>
+      <label class="block text-sm font-bold text-gray-300 mb-1">コメント</label>
       <textarea
         v-model="comment"
-        class="w-full border border-gray-400 p-1 text-sm mb-2"
+        class="w-full bg-gray-900 border border-gray-600 text-gray-100 p-1 mb-2 rounded"
         rows="3"
       ></textarea>
-      <p v-if="errorMessage" class="text-red-600 text-sm mb-2">
+
+      <p v-if="errorMessage" class="text-red-400 text-sm mb-2">
         {{ errorMessage }}
       </p>
+
       <button
         @click="submitPosts"
-        class="bg-gray-200 hover:bg-gray-300 text-black px-4 py-1 border border-gray-500 text-sm"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded text-sm"
       >
         投稿する
       </button>
     </div>
 
-    <div class="bg-white p-4 border border-gray-400">
-      <h2 class="text-lg font-bold text-blue-800 border-b pb-1 mb-2">
+    <!-- 投稿一覧 -->
+    <div class="bg-gray-800 p-4 border border-gray-700 rounded">
+      <h2
+        class="text-lg font-bold text-blue-200 border-b border-gray-600 pb-1 mb-3"
+      >
         📜 投稿一覧
       </h2>
-      <ul class="space-y-2 mt-2">
+
+      <ul class="space-y-3">
         <li
           v-for="item in filteredPosts"
           :key="item.id"
-          class="bg-gray-100 border p-2 rounded text-sm"
+          class="bg-gray-900 border border-gray-700 p-3 rounded text-sm"
         >
-          <p><strong>名前：</strong>{{ item.name }}</p>
-          <p><strong>コメント：</strong>{{ item.comment }}</p>
-          <p class="text-xs text-gray-500">
+          <p><strong class="text-blue-300">名前：</strong>{{ item.name }}</p>
+          <p>
+            <strong class="text-blue-300">コメント：</strong>{{ item.comment }}
+          </p>
+          <p class="text-xs text-gray-400">
             投稿日時：{{ formatDate(item.createdAt) }}
           </p>
+
           <!-- いいねボタン -->
           <button
             @click="likePost(item.id, item.likeCount ?? 0)"
-            class="bg-pink-50 text-pink-600 text-xs border border-pink-300 px-2 py-1 rounded hover:bg-pink-100 mr-2"
+            class="bg-gray-700 hover:bg-gray-600 text-pink-300 text-xs px-2 py-1 rounded mr-2"
           >
             ❤️ {{ item.likeCount ?? 0 }}
           </button>
+
+          <!-- 削除ボタン -->
           <button
             @click="deletePost(item.id)"
-            class="mt-2 text-red-600 text-xs border border-red-400 px-2 py-1 rounded hover:bg-red-100 transition"
+            class="text-red-400 text-xs border border-red-400 px-2 py-1 rounded hover:bg-red-900"
           >
             🗑 削除
           </button>
-          <!-- 📝返信フォーム -->
-          <div class="mt-2">
+
+          <!-- 返信フォーム -->
+          <div class="mt-3">
             <textarea
               v-model="replyText[item.id]"
-              placeholder="返信を入力"
-              class="w-full border border-gray-300 rounded p-1 text-xs mb-1"
+              placeholder="返信を書く"
+              class="w-full bg-gray-900 border border-gray-600 text-gray-100 p-1 rounded text-xs mb-2"
               rows="2"
             ></textarea>
             <button
               @click="submitReply(item.id)"
-              class="bg-blue-100 text-blue-800 px-2 py-1 text-xs rounded hover:bg-blue-200"
+              class="bg-gray-700 hover:bg-gray-600 text-blue-300 px-2 py-1 text-xs rounded"
             >
               返信する
             </button>
           </div>
 
-          <!-- 💬返信一覧 -->
+          <!-- 返信一覧 -->
           <ul
             v-if="item.replies"
-            class="mt-2 pl-4 border-l-2 border-gray-300 text-xs space-y-1"
+            class="mt-2 pl-4 border-l-2 border-gray-600 text-xs space-y-1"
           >
             <li
               v-for="(reply, replyId) in item.replies"
               :key="replyId"
-              class="text-gray-700"
+              class="text-gray-300"
             >
               💬 <strong>{{ reply.name }}</strong
               >：{{ reply.comment }}
