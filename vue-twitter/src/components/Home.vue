@@ -41,24 +41,50 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <nav><router-link to="/login">ログインページへ</router-link></nav>
-    <h1 class="text-2xl text-blue-600">Tailwind OK?</h1>
-    <h1>掲示板！</h1>
-    名前
-    <div><input type="text" v-model="name" /></div>
-    コメント
-    <div><textarea v-model="comment"></textarea></div>
-    <br />
-    <button @click="submitPosts">投稿する</button>
-    <br /><br />
+  <div class="min-h-screen bg-pink-50">
+    <div class="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md mt-10">
+      <router-link to="/login" class="text-purple-700 underline mb-4 block">
+        ログインページへ
+      </router-link>
 
-    <h2>投稿一覧</h2>
-    <ul>
-      <li v-for="item in post" :key="item.id">
-        {{ item.name }}: {{ item.comment }}
-      </li>
-    </ul>
+      <h1 class="text-3xl font-bold mb-4">Tailwind は動いてる？</h1>
+      <h2 class="text-2xl font-bold mb-6">📋 掲示板！</h2>
+
+      <div class="mb-4">
+        <label class="block font-semibold mb-1">名前</label>
+        <input
+          v-model="name"
+          class="w-full border border-gray-300 p-2 rounded"
+          type="text"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label class="block font-semibold mb-1">コメント</label>
+        <textarea
+          v-model="comment"
+          class="w-full border border-gray-300 p-2 rounded"
+        ></textarea>
+      </div>
+
+      <button
+        @click="submitPosts"
+        class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded font-bold transition"
+      >
+        投稿する
+      </button>
+
+      <h2 class="text-xl font-bold mt-10">📝 投稿一覧</h2>
+      <ul class="space-y-2 mt-2">
+        <li
+          v-for="item in post"
+          :key="item.id"
+          class="bg-gray-100 border p-2 rounded"
+        >
+          {{ item.name }}: {{ item.comment }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
